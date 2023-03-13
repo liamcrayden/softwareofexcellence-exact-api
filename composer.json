@@ -1,0 +1,29 @@
+{
+    "name": "liamcrayden/softwareofexcellence-exact-api",
+    "description": "A PHP interface for interacting with the Software Of Excellence eXact API",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Crayden\\SoftwareOfExcellenceExactAPI\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Liam Crayden",
+            "email": "liamcrayden@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.2.5",
+        "guzzlehttp/guzzle": "^7.3"
+    },
+    "extra": {
+        "laravel": {
+          "providers": [
+            "Crayden\\SoftwareOfExcellenceExactAPI\\Laravel\\SoftwareOfExcellenceExactAPIProvider"
+          ]
+        }
+      }
+    
+}
