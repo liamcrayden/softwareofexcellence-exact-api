@@ -31,4 +31,24 @@ class Sex
     {
         return $this->sex;
     }
+
+    public function isMake()
+    {
+        return $this->sex === 'Male';
+    }
+
+    public function isFemale()
+    {
+        return $this->sex === 'Female';
+    }
+
+    public function isOther()
+    {
+        return $this->sex === 'Other';
+    }
+
+    public function isUnspecified()
+    {
+        return $this->sex === 'Unspecified';
+    }
 }

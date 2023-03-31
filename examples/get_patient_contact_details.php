@@ -4,7 +4,7 @@ require_once('../vendor/autoload.php');
 
 use Crayden\SoftwareOfExcellenceExactAPI\ExactAPIClient;
 use Crayden\SoftwareOfExcellenceExactAPI\APIs\PracticeAPI;
-use Crayden\SoftwareOfExcellenceExactAPI\APIs\AppointmentAPI;
+use Crayden\SoftwareOfExcellenceExactAPI\APIs\PatientAPI;
 
 use Crayden\SoftwareOfExcellenceExactAPI\Exceptions\InvalidAPIResponseException;
 use Crayden\SoftwareOfExcellenceExactAPI\Exceptions\OutsideScopeAccessException;
@@ -14,25 +14,23 @@ use Crayden\SoftwareOfExcellenceExactAPI\Exceptions\AuthorizationException;
 $client_id = '';
 $client_secret = '';
 
+$practice_id = 'WFEVAL';
+$patient_id = '00000dff-1300-0000-0000-008034ec7256';
+
 $exact = new ExactAPIClient( $client_id, $client_secret );
 $exact->setEnvironment('qa');
-$exact->addScopes(['practice.get', 'appointment.list']);
-$practiceAPI = new PracticeAPI( $exact );
-$appointmentAPI = new AppointmentAPI( $exact );
+$exact->addScopes(['patient.get', 'patient.get.contactdetails.phone', 'patient.get.contactdetails.email']);
+$patientAPI = new PatientAPI( $exact );
 
 try 
 { 
-    $practice = $practiceAPI->getPractice('WFEVAL');
-    $from = new \DateTime('-2 months', new \DateTimeZone('Europe/London'));
-    $to = new \DateTime('now', new \DateTimeZone('Europe/London'));
+    $details = $patientAPI->getPatientContactDetails($practice_id, $patient_id);
 
-    $appointments = $appointmentAPI->getAppointmentsBetween(
-        $practice->getPracticeId(), 
-        $from, 
-        $to
-    );
+    echo "Number of email addresses: " . count( $details->getEmailAddresses() ) . PHP_EOL;
+    echo "Number of phone numbers: " . count( $details->getPhoneNumbers() ) . PHP_EOL;
+    echo "First email: {$details->getPrimaryEmailAddress()}" . PHP_EOL;
+    echo "First number: {$details->getPrimaryPhoneNumber()}" . PHP_EOL . PHP_EOL;         // This is cast as a string
 
-    print_r( $appointments );
 } catch ( OutsideScopeAccessException $e ) { 
     echo "OutsideScopeAccessException: " . $e->getMessage() . PHP_EOL;
 } catch ( PracticeInaccessibleException $e ) { 

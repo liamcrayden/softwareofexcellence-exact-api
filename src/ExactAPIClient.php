@@ -124,6 +124,8 @@ class ExactAPIClient
                 'practitioner.list', 
                 'practitioner.get', 
                 'productsubscription.get', 
+                'patient.get.contactdetails.phone', 
+                'patient.get.contactdetails.email', 
             ] ))
             {
                 array_push( $this->scopes, $scope );
@@ -235,7 +237,7 @@ class ExactAPIClient
         return $this;
     }
 
-    public function makeAPIRequest($method, $url, $expected_code = FALSE, $headers = [], $payload = [])
+    public function makeAPIRequest($method, $url, $expected_code = FALSE, $headers = [], $payload = '')
     {
         if ( $expected_code === FALSE )
             $expected_code = 200;
@@ -247,9 +249,10 @@ class ExactAPIClient
                     [
                         'Authorization' => 'Bearer ' . $this->access_token,
                         'Accept'  => 'application/json', 
+                        'Content-Type'  => 'application/json', 
                         'x-api-version' => '1.0', 
                     ]),
-                'form_params' => $payload, 
+                'body' => $payload, 
             ]);
             
             if ( $response->getStatusCode() === $expected_code )

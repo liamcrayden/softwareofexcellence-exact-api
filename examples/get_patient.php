@@ -9,14 +9,16 @@ use Crayden\SoftwareOfExcellenceExactAPI\APIs\PatientAPI;
 use Crayden\SoftwareOfExcellenceExactAPI\Exceptions\InvalidAPIResponseException;
 use Crayden\SoftwareOfExcellenceExactAPI\Exceptions\OutsideScopeAccessException;
 use Crayden\SoftwareOfExcellenceExactAPI\Exceptions\PracticeInaccessibleException;
+use Crayden\SoftwareOfExcellenceExactAPI\Exceptions\AuthorizationException;
 
 $client_id = '';
 $client_secret = '';
 
 $practice_id = 'WFEVAL';
-$patient_id = '000005ff-1300-0000-0000-008034ec7256';
+$patient_id = '00000dff-1300-0000-0000-008034ec7256';
 
 $exact = new ExactAPIClient( $client_id, $client_secret );
+$exact->setEnvironment('qa');
 $exact->addScopes(['patient.get']);
 $patientAPI = new PatientAPI( $exact );
 
@@ -30,6 +32,8 @@ try
     echo "PracticeInaccessibleException: " . $e->getMessage() . PHP_EOL;
 } catch ( InvalidAPIResponseException $e ) { 
     echo "InvalidAPIResponseException: " . $e->getMessage() . PHP_EOL;
+} catch ( AuthorizationException $e ) { 
+    echo "AuthorizationException: " . $e->getMessage() . PHP_EOL;
 } catch ( \Exception $e ) { 
     echo "Exception: " . $e->getMessage() . PHP_EOL;
 }

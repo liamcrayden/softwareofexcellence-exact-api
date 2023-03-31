@@ -13,9 +13,9 @@ class PatientContactRequest implements ArrayAccess
     private $scheduled;
     private $priority;    
 
-    public function __construct($pcr)
+    public function __construct($pcr = null)
     {
-        isset($pcr->type) && $this->type = PatientMessageType($pcr->type);
+        isset($pcr->type) && $this->type = new PatientMessageType($pcr->type);
         isset($pcr->subject) && $this->subject = $pcr->subject;
         isset($pcr->body) && $this->body = $pcr->body;
         isset($pcr->scheduled) && $this->scheduled = $pcr->scheduled;
@@ -49,12 +49,17 @@ class PatientContactRequest implements ArrayAccess
     public function toArray()
     {
         return [ 
-            'type' => $this->type, 
+            'type' => (string) $this->type, 
             'subject' => $this->subject, 
             'body' => $this->body, 
             'scheduled' => $this->scheduled, 
             'priority' => $this->priority, 
         ];
+    }
+
+    public function __toString()
+    {
+        return json_encode( $this->toArray() );
     }
 
     public function getType()
