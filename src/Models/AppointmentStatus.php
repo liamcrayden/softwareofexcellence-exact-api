@@ -11,16 +11,13 @@ class AppointmentStatus
         switch ($status)
         {
             case 'Unset':
-            case 'Booked':
+            case 'Pending':
             case 'Arrived':
-            case 'Complete':
-            case 'FailedToAttend':
-            case 'Seated':
+            case 'Completed':
+            case 'DidNotAttend':
+            case 'InSurgery':
             case 'Confirmed':
             case 'Cancelled':
-            case 'Rebooked':
-            case 'ReturnedToWaitingRoom':
-            case 'Reseated':
                 $this->value = $status;
                 break;
             default:
@@ -41,11 +38,11 @@ class AppointmentStatus
 
     public function isComplete()
     {
-        return $this->value === 'Complete';
+        return $this->value === 'Completed';
     }
 
     public function isInSurgery()
     {
-        return in_array(['Arrived', 'Seated', 'ReturnedToWaitingRoom', 'Reseated'], $this->value);
+        return in_array(['Arrived', 'InSurgery'], $this->value);
     }
 }
